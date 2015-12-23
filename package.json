@@ -6,6 +6,13 @@
   "scripts": {
     "test": "mocha test/tasks/*.spec.js"
   },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/wuhy/fisx-package.git"
+  },
+  "bugs": {
+    "url": "http://github.com/wuhy/fisx-package/issues"
+  },
   "keywords": [
     "fis3",
     "fisx",
