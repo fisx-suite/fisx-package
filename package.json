@@ -1,6 +1,6 @@
 {
   "name": "fisx-package",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "component package manage for fisx",
   "main": "index.js",
   "scripts": {
