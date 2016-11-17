@@ -4,22 +4,35 @@
  */
 
 var Promise = require('bluebird');
+var Timer = require('./lib/timer');
+
+function wrapTimer(func) {
+   return function () {
+       var timer = new Timer();
+       timer.start();
+       var logger = require('./lib/config').log;
+       return func.apply(this, arguments).finally(function (result) {
+           logger.time('Done in ' + timer.getTotalTime(true));
+           return result;
+       });
+   }
+}
 
 module.exports = exports = {
     get install() {
-        return require('./lib/command/install');
+        return wrapTimer(require('./lib/command/install'));
     },
     get uninstall() {
-        return require('./lib/command/uninstall');
+        return wrapTimer(require('./lib/command/uninstall'));
     },
     get update() {
-        return require('./lib/command/update');
+        return wrapTimer(require('./lib/command/update'));
     },
     get list() {
-        return require('./lib/command/list');
+        return wrapTimer(require('./lib/command/list'));
     },
     get search() {
-        return require('./lib/command/search');
+        return wrapTimer(require('./lib/command/search'));
     },
     get config() {
         return require('./lib/config');
