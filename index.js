@@ -7,15 +7,15 @@ var Promise = require('bluebird');
 var Timer = require('./lib/timer');
 
 function wrapTimer(func) {
-   return function () {
-       var timer = new Timer();
-       timer.start();
-       var logger = require('./lib/config').log;
-       return func.apply(this, arguments).finally(function (result) {
-           logger.time('Done in ' + timer.getTotalTime(true));
-           return result;
-       });
-   }
+    return function () {
+        var timer = new Timer();
+        timer.start();
+        var logger = require('./lib/config').log;
+        return func.apply(this, arguments).finally(function (result) {
+            logger.time('Done in ' + timer.getTotalTime(true));
+            return result;
+        });
+    };
 }
 
 module.exports = exports = {
