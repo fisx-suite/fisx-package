@@ -6,13 +6,13 @@
 var Promise = require('bluebird');
 var Timer = require('./lib/timer');
 
-function wrapTimer(func) {
+function wrapTimer(func, logPrefix) {
     return function () {
         var timer = new Timer();
         timer.start();
         var logger = require('./lib/config').log;
         return func.apply(this, arguments).finally(function (result) {
-            logger.time('Done in ' + timer.getTotalTime(true));
+            logger.time((logPrefix || 'All') + ' done in ' + timer.getTotalTime(true));
             return result;
         });
     };
@@ -20,23 +20,36 @@ function wrapTimer(func) {
 
 module.exports = exports = {
     get install() {
-        return wrapTimer(require('./lib/command/install'));
+        return wrapTimer(require('./lib/command/install'), 'Install');
     },
     get uninstall() {
-        return wrapTimer(require('./lib/command/uninstall'));
+        return wrapTimer(require('./lib/command/uninstall'), 'Uninstall');
     },
     get update() {
-        return wrapTimer(require('./lib/command/update'));
+        return wrapTimer(require('./lib/command/update'), 'Update');
     },
     get list() {
-        return wrapTimer(require('./lib/command/list'));
+        return wrapTimer(require('./lib/command/list'), 'List');
     },
     get search() {
-        return wrapTimer(require('./lib/command/search'));
+        return wrapTimer(require('./lib/command/search'), 'Search ');
     },
     get config() {
         return require('./lib/config');
     }
+};
+
+exports.scaffold = function (fis) {
+    // 应用  fis-conf.js 自定义的配置
+    var pkgManageConfig = exports.config;
+    pkgManageConfig.initConfig(fis.config);
+
+    pkgManageConfig.log = fis.log;
+
+    return {
+        download: wrapTimer(require('./lib/scaffold').download, 'Download scaffold'),
+        prompt: require('./lib/helper').prompt
+    };
 };
 
 /**
@@ -104,4 +117,3 @@ exports.loadUserConfig = function (configFile, options, fis) {
 
     return Promise.resolve();
 };
-
