@@ -10,6 +10,14 @@ describe('Package', function () {
         expect(pkg.aliasName).to.eql('myer');
         expect(pkg.endPoint).to.eql({type: 'edp'});
 
+        pkg = Package.toPackage('npm:@leichtgewicht/msee@1.0.0');
+
+        expect(pkg instanceof Package).to.be(true);
+        expect(pkg.name).to.eql('@leichtgewicht/msee');
+        expect(pkg.version).to.eql('1.0.0');
+        expect(pkg.aliasName).to.eql(undefined);
+        expect(pkg.endPoint).to.eql({type: 'npm'});
+
 
         pkg = Package.toPackage('http://edp-registry.baidu.com/er/-/er-3.0.0.tgz');
 
