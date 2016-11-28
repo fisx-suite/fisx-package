@@ -33,6 +33,7 @@
     "lodash": "^3.10.1",
     "log-symbols": "^1.0.2",
     "mkdirp": "^0.5.1",
+    "opn": "^4.0.2",
     "pretty-ms": "^2.1.0",
     "progress": "^1.1.8",
     "prompt": "^1.0.0",
