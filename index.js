@@ -11,9 +11,8 @@ function wrapTimer(func, logPrefix) {
         var timer = new Timer();
         timer.start();
         var logger = require('./lib/config').log;
-        return func.apply(this, arguments).finally(function (result) {
+        return func.apply(this, arguments).finally(function () {
             logger.time((logPrefix || 'All') + ' done in ' + timer.getTotalTime(true));
-            return result;
         });
     };
 }
@@ -32,7 +31,7 @@ module.exports = exports = {
         return wrapTimer(require('./lib/command/list'), 'List');
     },
     get search() {
-        return wrapTimer(require('./lib/command/search'), 'Search ');
+        return wrapTimer(require('./lib/command/search'), 'Search');
     },
     get config() {
         return require('./lib/config');
