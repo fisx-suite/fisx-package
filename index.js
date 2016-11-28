@@ -6,11 +6,32 @@
 var Promise = require('bluebird');
 var Timer = require('./lib/timer');
 
+function initDefaultConfig(options) {
+    options || (options = {});
+
+    var config = require('./lib/config');
+    if (options.registry) {
+        config.defaultNPMRegistry = options.registry;
+    }
+
+    if (options.token) {
+        config.defaultGitlabToken = options.token;
+    }
+
+    if (options.domain) {
+        config.defaultGitlabDomain = options.domain;
+    }
+}
+
 function wrapTimer(func, logPrefix) {
     return function () {
         var timer = new Timer();
         timer.start();
         var logger = require('./lib/config').log;
+
+        var opts = arguments.length > 1 ? arguments[1] : arguments[0];
+        initDefaultConfig(opts);
+
         return func.apply(this, arguments).finally(function () {
             logger.time((logPrefix || 'All') + ' done in ' + timer.getTotalTime(true));
         });
