@@ -139,21 +139,11 @@ exports.initProjectRoot = function (fisConfigFile, options, fis) {
  * @return {Promise}
  */
 exports.loadUserConfig = function (configFile, options, fis) {
-    var filepath = require('path').resolve(options.root, configFile);
-
-    try {
-        require(filepath);
-    }
-    catch (ex) {
-        // do nothing
-    }
-
     // 应用  fis-conf.js 自定义的配置
     var pkgManageConfig = exports.config;
     pkgManageConfig.initConfig(fis.config);
 
     // fis3 log.error 方法调用是会强制退出程序的。。
     pkgManageConfig.log = fis.log;
-
     return Promise.resolve();
 };
